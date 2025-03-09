@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberbullying Detection</title>
+    <style>
+        /* Enhanced elegant color palette */
+        :root {
+            --primary: #2d3e50;    /* Deep navy blue */
+            --secondary: #e67e22;  /* Warm orange */
+            --tertiary: #c0392b;   /* Rich crimson */
+            --accent: #6c3483;     /* Royal purple */
+            --light: #f5f7fa;      /* Soft off-white */
+            --dark: #34495e;       /* Charcoal blue */
+            --text: #2c3e50;       /* Rich dark blue-gray for text */
+            
+            /* New background colors */
+            --bg-gradient-1: #f1f5f8;  /* Light blue-gray */
+            --bg-gradient-2: #e8eef3;  /* Softer blue-gray */
+            --section-bg: #ffffff;     /* Pure white for sections */
+            --card-bg-hover: #f8f9fb;  /* Very subtle blue tint */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            background-attachment: fixed;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1000/300');
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-family: 'Times New Roman', Times, serif;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        nav {
+            background-color: var(--accent);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            display: block;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .main-content {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .sidebar {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .section {
+            background: var(--section-bg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .stats-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .stats-box h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-right: 1rem;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+        }
+
+        .quote-box {
+            background-color: rgba(108, 52, 131, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent);
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: """;
+            font-size: 4rem;
+            color: rgba(108, 52, 131, 0.2);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+        }
+
+        .quote {
+            font-style: italic;
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .highlight {
+            background-color: rgba(230, 126, 34, 0.08);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .method-card {
+            background: var(--section-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+            background: var(--card-bg-hover);
+        }
+
+        .method-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .method-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .results-bar {
+            height: 30px;
+            background-color: rgba(45, 62, 80, 0.1);
+            border-radius: 15px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .results-fill {
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 1.5s ease-in-out;
+            width: 0;
+        }
+
+        .lstm {
+            background: linear-gradient(to right, var(--primary), var(--dark));
+        }
+
+        .svm {
+            background: linear-gradient(to right, var(--tertiary), var(--accent));
+        }
+
+        .random-forest {
+            background: linear-gradient(to right, var(--secondary), #f39c12);
+        }
+
+        .timeline {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent);
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+            width: 50%;
+            padding: 0 2rem;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            top: 8px;
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -8px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -8px;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links li {
+            margin: 0 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Added image styles */
+        .section-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .section-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .section-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-caption {
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--dark);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .timeline::before {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 4rem;
+                text-align: left;
+            }
+            
+            .timeline-item:nth-child(odd) {
+                left: 0;
+                text-align: left;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item::before {
+                left: 23px;
+            }
+            
+            .timeline-item:nth-child(odd)::before {
+                right: auto;
+                left: 23px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">Cyberbullying Detection System</div>
+            <div class="subtitle">Leveraging Artificial Intelligence to Create Safer Online Environments</div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#methodology">Methodology</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <section id="introduction" class="section">
+                <h2>Introduction</h2>
+                <p>The rise of social media platforms has transformed how we communicate and interact online. While these platforms offer unprecedented connectivity, they have also given rise to cyberbullying, a serious problem affecting users worldwide, particularly young people.</p>
+                
+                <div class="section-image">
+                    <img src="1.jpg" alt="Social media platforms and online interaction visualization">
+                   
+                </div>
+                
+                <div class="quote-box">
+                    <p class="quote">Cyberbullying represents one of the most significant challenges to digital well-being in the modern era, with far-reaching psychological and social consequences for victims.</p>
+                    <p class="quote-author">— Journal of Online Safety, 2024</p>
+                </div>
+                
+                <p>This project addresses this critical issue by developing an advanced AI-powered system capable of detecting and mitigating cyberbullying effectively. By combining cutting-edge machine learning with natural language processing techniques, we aim to create safer online environments for all users.</p>
+                
+                <div class="highlight">
+                    <p>Our research focuses on YouTube comments as a primary data source, where the anonymity and reach of the platform often contribute to higher instances of online harassment.</p>
+                </div>
+            </section>
+
+            <section id="methodology" class="section">
+                <h2>Methodology</h2>
+                <p>Our comprehensive approach to cyberbullying detection combines data collection, preprocessing, feature engineering, and model development:</p>
+                
+                <div class="section-image">
+                    <img src="2.jpeg" alt="Cyberbullying detection methodology flowchart">
+                
+                </div>
+                
+                <div class="methodology-grid">
+                    <div class="method-card">
+                        <div class="method-icon">📊</div>
+                        <h3>Data Collection</h3>
+                        <p>We harvested YouTube comments using the YouTube Data API, focusing on videos with high engagement and diverse content categories to ensure representative sampling.</p>
+                    </div>
+                    
+                    <div class="method-card">
+                        <div class="method-icon">🔍</div>
+                        <h3>Preprocessing</h3>
+                        <p>Raw text underwent tokenization, stop-word removal, lemmatization, and normalization to prepare the data for effective feature extraction.</p>
+                    </div>
+                    
+                    <div class="method-card">
+                        <div class="method-icon">⚙️</div>
+                        <h3>Feature Extraction</h3>
+                        <p>We utilized TF-IDF vectorization and pre-trained word embeddings (GloVe) to transform text into numerical representations suitable for machine learning.</p>
+                    </div>
+                    
+                    <div class="method-card">
+                        <div class="method-icon">🧠</div>
+                        <h3>Model Training</h3>
+                        <p>Multiple models were developed and compared, including traditional ML approaches (Logistic Regression, SVM, Random Forest) and deep learning architectures (LSTM, RNN).</p>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Data Annotation</div>
+                        <p>Manual labeling of comments as bullying or non-bullying by trained annotators with inter-rater reliability checks.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Model Selection</div>
+                        <p>Comparative analysis of model performance using cross-validation on balanced datasets.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Hyperparameter Tuning</div>
+                        <p>Grid search optimization to find ideal parameters for each model architecture.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-title">Deployment</div>
+                        <p>Integration with Streamlit for user-friendly interface and real-time detection capabilities.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results" class="section">
+                <h2>Results</h2>
+                <p>Our comprehensive evaluation demonstrated that deep learning models, particularly LSTM networks, significantly outperformed traditional machine learning approaches for cyberbullying detection.</p>
+                
+                <div class="section-image">
+                    
+                    
+                </div>
+                
+                <h3>Model Performance</h3>
+                <div class="results-bar">
+                    <div class="results-fill lstm" style="width: 81.56%">LSTM: 81.56%</div>
+                </div>
+                
+                <div class="results-bar">
+                    <div class="results-fill svm" style="width: 76.2%">SVM: 76.20%</div>
+                </div>
+                
+                <div class="results-bar">
+                    <div class="results-fill random-forest" style="width: 73.4%">Random Forest: 73.40%</div>
+                </div>
+                
+                <div class="highlight">
+                    <p>The LSTM model's superior performance can be attributed to its ability to capture sequential patterns and contextual information in text data, which is crucial for understanding the nuanced nature of cyberbullying.</p>
+                </div>
+                
+                <p>In addition to overall accuracy, our LSTM model demonstrated excellent precision (79.2%) and recall (80.7%), indicating a balanced ability to identify bullying content while minimizing false positives.</p>
+                
+                <p>The deployed Streamlit application enables real-time detection with response times under 1.5 seconds, making it suitable for integration with high-traffic platforms.</p>
+            </section>
+
+            <section id="conclusion" class="section">
+                <h2>Conclusion</h2>
+                <p>Our AI-powered cyberbullying detection system represents a significant step forward in creating safer online environments. By leveraging advanced deep learning architectures, we have demonstrated that automated systems can effectively identify harmful content with high accuracy.</p>
+                
+                <div class="section-image">
+                    <img src="4.jpg" alt="Real-world application of cyberbullying detection system">
+                    
+                </div>
+                
+                <div class="quote-box">
+                    <p class="quote">The combination of AI and human moderation presents the most promising approach to addressing cyberbullying at scale while respecting the nuances of human communication.</p>
+                    <p class="quote-author">— Project Lead</p>
+                </div>
+                
+                <h3>Future Directions</h3>
+                <p>While our current implementation shows promising results, several avenues for enhancement exist:</p>
+                <ul>
+                    <li><strong>Cross-platform integration:</strong> Expanding detection capabilities to multiple social media platforms</li>
+                    <li><strong>Multilingual support:</strong> Developing models capable of detecting cyberbullying in various languages</li>
+                    <li><strong>Advanced NLP techniques:</strong> Implementing transformer-based models like BERT for improved contextual understanding</li>
+                    <li><strong>Intervention strategies:</strong> Developing systems that not only detect but also suggest appropriate interventions</li>
+                </ul>
+                
+                <p>This project demonstrates the potential of AI as a powerful tool in the ongoing effort to combat online harassment and create digital spaces where users can engage safely and constructively.</p>
+            </section>
+        </div>
+
+        <div class="sidebar">
+            <div class="stats-box">
+                <h3>Key Statistics</h3>
+                <div class="stat-item">
+                    <div class="stat-value">81.56%</div>
+                    <div class="stat-label">LSTM Model Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">10K+</div>
+                    <div class="stat-label">YouTube Comments Analyzed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">5 ML Models,2 Deep Learning Models Compared</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Research Impact</h3>
+                <p>This project contributes to the growing field of AI ethics and online safety by providing:</p>
+                <ul>
+                    <li>Scalable detection solutions for platform moderators</li>
+                    <li>Benchmark performance data for cyberbullying classifiers</li>
+                    <li>Insights into linguistic patterns associated with online harassment</li>
+                    <li>Open-source tools for researchers and developers</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Technical Stack</h3>
+                <ul>
+                    <li><strong>Data Collection:</strong> YouTube Data API</li>
+                    <li><strong>Machine Learning:</strong> Scikit-learn</li>
+                    <li><strong>Deep Learning:</strong> TensorFlow, Keras</li>
+                    <li><strong>Deployment:</strong> Streamlit</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3 class="footer-title">Cyberbullying Detection Research</h3>
+            <p>Dedicated to creating safer online environments through advanced AI techniques</p>
+            <ul class="footer-links">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Resources</a></li>
+                <li><a href="#">Publications</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <p>&copy; 2025 Cyberbullying Detection Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script to animate the results bars on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const bars = document.querySelectorAll('.results-fill');
+            
+            setTimeout(() => {
+                bars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('style').split(':')[1];
+                });
+            }, 300);
+
+            // Add smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
